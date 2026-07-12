@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #fdfaf5;
+  color: #1e1b2e;
+}
+
+/* İnce noktalı doku — arka plana derinlik verir, dikkat çekmez */
+.dotted-bg {
+  background-image: radial-gradient(rgba(30, 27, 46, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Gradyan metin — marka vurgusu */
+.gradient-text {
+  background: linear-gradient(100deg, #7c3aed 0%, #db2777 55%, #f97316 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Birincil gradyan yüzey (butonlar) */
+.gradient-primary {
+  background: linear-gradient(100deg, #7c3aed 0%, #db2777 60%, #f97316 130%);
+}
+
+::selection {
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+/* Panel/form giriş alanı — tekrar eden stil */
+@layer components {
+  .input-base {
+    @apply w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white;
+  }
+}

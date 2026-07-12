@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(curl -sN -X POST http://localhost:64162/api/generate -H 'Content-Type: application/json' --data @/private/tmp/claude-501/-Users-buraktunc-CV-Ready/38f6e3aa-79ae-4802-b76e-5fd9a0184342/scratchpad/req.json -o /private/tmp/claude-501/-Users-buraktunc-CV-Ready/38f6e3aa-79ae-4802-b76e-5fd9a0184342/scratchpad/response.ndjson -w 'HTTP %{http_code} in %{time_total}s\\\\n')",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -sN -X POST http://localhost:64162/api/generate -H 'Content-Type: application/json' --data @/private/tmp/claude-501/-Users-buraktunc-CV-Ready/38f6e3aa-79ae-4802-b76e-5fd9a0184342/scratchpad/req.json -o /private/tmp/claude-501/-Users-buraktunc-CV-Ready/38f6e3aa-79ae-4802-b76e-5fd9a0184342/scratchpad/response-sonnet.ndjson -w 'HTTP %{http_code} in %{time_total}s\\\\n')",
+      "Bash(ls -t ~/Downloads/Ayşe_Yılmaz_CV*.pdf 2>/dev/null | head -3)",
+      "Bash(sed -i '' 's/body: { lineHeight: 1.45 }/body: {}/g; s/body: { lineHeight: 1.5 }/body: {}/g' components/CVDocument.tsx)",
+      "Bash(sed -i '' 's|// NOT: lineHeight sayfa seviyesinde MİRAS kalır ve mutlak değere çözülür —|// NOT: react-pdf satır yüksekliğini fontun doğal metriğiyle çarptığı için|; s|// büyük puntolu isim satırı bu yüzden eziliyordu. Her stile kendi lineHeight.ı verilir.|// lineHeight hiç verilmez — Roboto doğal aralığı CV için ideal.|' components/CVDocument.tsx)",
+      "Bash(rm -f ~/Downloads/Ayşe_Yılmaz_CV*.pdf && echo temizlendi)",
+      "Bash(node -e ' *)",
+      "Bash(rm -f ~/Downloads/Ayşe_Yılmaz_CV*.pdf 2>/dev/null; echo \"temizlendi\")",
+      "Bash(echo \"tsc exit: $?\")"
+    ]
+  }
+}

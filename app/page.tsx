@@ -1,330 +1,160 @@
-"use client";
+import Link from "next/link";
+import {
+  Sparkles,
+  Wand2,
+  Upload,
+  Rocket,
+  Search,
+  ShieldCheck,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
-import { FileText, Sparkles, Wand2, PenLine, Globe } from "lucide-react";
-import { t, type Lang } from "@/lib/i18n";
-import type { TailoredCV } from "@/lib/cv-schema";
-import { DEMO_CV } from "@/lib/demo-cv";
-import UploadZone from "@/components/UploadZone";
-import JobInput from "@/components/JobInput";
-import GenerationOverlay from "@/components/GenerationOverlay";
-import ResultView from "@/components/ResultView";
+export const metadata = {
+  title: "CV Ready — Yapay zekayla ilana özel CV + aday havuzu",
+  description:
+    "CV'ni ilana göre saniyeler içinde yeniden yazdır, dilersen aday havuzunda yayınla. İşverenler KVKK korumalı havuzda seni bulsun.",
+};
 
-type Phase = "form" | "generating" | "result";
-
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
-      resolve(dataUrl.split(",")[1]);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-export default function Home() {
-  const [lang, setLang] = useState<Lang>("tr");
-  const dict = t[lang];
-
-  const [phase, setPhase] = useState<Phase>("form");
-  const [file, setFile] = useState<File | null>(null);
-  const [jobMode, setJobMode] = useState<"url" | "text">("url");
-  const [jobUrl, setJobUrl] = useState("");
-  const [jobText, setJobText] = useState("");
-  const [extraNotes, setExtraNotes] = useState("");
-  const [outputLang, setOutputLang] = useState<"auto" | "tr" | "en">("auto");
-  const [streamedChars, setStreamedChars] = useState(0);
-  const [cv, setCv] = useState<TailoredCV | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const [demoMode, setDemoMode] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("cvready-lang");
-    if (saved === "en" || saved === "tr") setLang(saved);
-    setDemoMode(new URLSearchParams(window.location.search).has("demo"));
-  }, []);
-
-  const switchLang = (l: Lang) => {
-    setLang(l);
-    localStorage.setItem("cvready-lang", l);
-  };
-
-  const canGenerate =
-    demoMode ||
-    (!!file &&
-      (jobMode === "url" ? jobUrl.trim().startsWith("http") : jobText.trim().length > 100));
-
-  const generate = useCallback(async () => {
-    if (!file && !demoMode) return;
-    setError(null);
-    setStreamedChars(0);
-    setPhase("generating");
-
-    // Demo modu (?demo=1): API harcamadan animasyonu + sonucu göster
-    if (demoMode) {
-      for (let chars = 0; chars <= 7000; chars += 350) {
-        setStreamedChars(chars);
-        await new Promise((r) => setTimeout(r, 400));
-      }
-      setCv(DEMO_CV);
-      setPhase("result");
-      return;
-    }
-
-    try {
-      // Demo modu yukarıda döndüğü için burada file kesin dolu
-      const cvBase64 = await fileToBase64(file!);
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cvBase64,
-          jobUrl: jobMode === "url" ? jobUrl.trim() : undefined,
-          jobText: jobMode === "text" ? jobText.trim() : undefined,
-          extraNotes: extraNotes.trim() || undefined,
-          outputLang,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        if (data.error === "fetch_failed") {
-          setError(dict.errorFetch);
-          setJobMode("text");
-        } else if (data.error === "no_api_key") {
-          setError(dict.errorNoKey);
-        } else {
-          setError(dict.errorGeneric);
-        }
-        setPhase("form");
-        return;
-      }
-
-      // NDJSON akışını satır satır işle
-      const reader = res.body!.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let result: TailoredCV | null = null;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() ?? "";
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          const event = JSON.parse(line);
-          if (event.type === "progress") setStreamedChars(event.chars);
-          else if (event.type === "complete") result = event.cv;
-        }
-      }
-
-      if (result) {
-        setCv(result);
-        setPhase("result");
-      } else {
-        setError(dict.errorGeneric);
-        setPhase("form");
-      }
-    } catch {
-      setError(dict.errorGeneric);
-      setPhase("form");
-    }
-  }, [file, demoMode, jobMode, jobUrl, jobText, extraNotes, outputLang, dict]);
-
-  const reset = () => {
-    setCv(null);
-    setFile(null);
-    setJobUrl("");
-    setJobText("");
-    setExtraNotes("");
-    setError(null);
-    setPhase("form");
-  };
-
+export default function LandingPage() {
   return (
     <main className="min-h-screen dotted-bg">
-      {/* Üst bar */}
-      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-2.5 font-display text-xl font-bold">
-          <span className="gradient-primary flex h-9 w-9 items-center justify-center rounded-xl shadow-glow">
-            <FileText className="h-5 w-5 text-white" />
-          </span>
-          CV<span className="gradient-text">Ready</span>
+      {/* Hero */}
+      <section className="mx-auto w-full max-w-5xl px-6 pb-16 pt-14 text-center sm:pt-20">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet/20 bg-violet-soft px-4 py-1.5 text-sm font-semibold text-violet">
+          <Sparkles className="h-3.5 w-3.5" /> Yapay zeka destekli kariyer platformu
+        </span>
+        <h1 className="mx-auto mt-6 max-w-3xl font-display text-5xl font-bold leading-tight tracking-tight sm:text-6xl">
+          İlana özel <span className="gradient-text">mükemmel CV</span>, sonra doğru işverenle buluşma
+        </h1>
+        <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink/55">
+          CV'ni yükle, ilanı yapıştır — yapay zeka o ilana göre yeniden yazsın. Dilersen tek
+          tıkla aday havuzunda yayınla, işverenler seni bulsun.
+        </p>
+
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/olustur"
+            className="gradient-primary flex items-center gap-2 rounded-2xl px-7 py-4 font-display text-lg font-bold text-white shadow-glow transition-transform hover:-translate-y-0.5"
+          >
+            <Wand2 className="h-5 w-5" /> CV oluştur
+          </Link>
+          <Link
+            href="/isverenler"
+            className="flex items-center gap-2 rounded-2xl border-2 border-ink/10 bg-white px-7 py-4 font-display text-lg font-bold text-ink/70 transition-colors hover:border-violet/40 hover:text-ink"
+          >
+            <Search className="h-5 w-5 text-violet" /> Aday ara
+          </Link>
         </div>
-        <div className="flex items-center gap-0.5 rounded-full border border-ink/10 bg-white p-1 shadow-card">
-          {(["tr", "en"] as const).map((l) => (
-            <button
-              key={l}
-              onClick={() => switchLang(l)}
-              className={`rounded-full px-3.5 py-1 text-xs font-bold uppercase tracking-wide transition-colors ${
-                lang === l ? "bg-ink text-white" : "text-ink/50 hover:text-ink"
-              }`}
+      </section>
+
+      {/* İki taraf */}
+      <section className="mx-auto grid w-full max-w-5xl gap-5 px-6 pb-16 md:grid-cols-2">
+        <AudienceCard
+          icon={<Users className="h-5 w-5 text-violet" />}
+          eyebrow="Aday isen"
+          title="CV'ni ilana göre uyarla, yayınla"
+          items={[
+            "Yapay zeka CV'ni her ilana göre yeniden yazar",
+            "Uyum skorun ve eksiklerin anında görünür",
+            "İstersen KVKK onayıyla havuzda yayınla",
+          ]}
+          href="/olustur"
+          cta="Hemen dene"
+        />
+        <AudienceCard
+          icon={<ShieldCheck className="h-5 w-5 text-violet" />}
+          eyebrow="İşveren isen"
+          title="Hazır adayları ara ve güvenle iletişime geç"
+          items={[
+            "Yetenek, konum ve dile göre filtrele",
+            "Adayların iletişim bilgisi KVKK ile korunur",
+            "Platform üzerinden maskeli temas kur",
+          ]}
+          href="/isverenler"
+          cta="İşveren paneli"
+        />
+      </section>
+
+      {/* Nasıl çalışır */}
+      <section id="nasil-calisir" className="mx-auto w-full max-w-5xl px-6 pb-24">
+        <h2 className="mb-8 text-center font-display text-3xl font-bold tracking-tight">
+          Nasıl çalışır?
+        </h2>
+        <div className="grid gap-5 sm:grid-cols-3">
+          {[
+            { icon: Upload, title: "1 · Yükle", text: "CV'ni yükle ve hedef ilanı ekle." },
+            { icon: Wand2, title: "2 · Uyarla", text: "Yapay zeka CV'ni ilana göre yeniden yazar." },
+            { icon: Rocket, title: "3 · Yayınla", text: "PDF indir ya da havuzda yayınla." },
+          ].map((s, i) => (
+            <div
+              key={i}
+              className="rounded-3xl border border-ink/5 bg-white p-6 text-center shadow-card"
             >
-              {l}
-            </button>
+              <span className="gradient-primary mx-auto flex h-12 w-12 items-center justify-center rounded-2xl shadow-glow">
+                <s.icon className="h-6 w-6 text-white" />
+              </span>
+              <h3 className="mt-4 font-display text-lg font-bold">{s.title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-ink/55">{s.text}</p>
+            </div>
           ))}
         </div>
-      </header>
 
-      <AnimatePresence mode="wait">
-        {phase === "result" && cv ? (
-          <ResultView key="result" cv={cv} dict={dict} lang={lang} onReset={reset} />
-        ) : (
-          <motion.div
-            key="form"
-            exit={{ opacity: 0, y: -20 }}
-            className="mx-auto w-full max-w-3xl px-6 pb-24"
+        <div className="mt-10 text-center">
+          <Link
+            href="/olustur"
+            className="inline-flex items-center gap-2 font-display text-lg font-bold text-violet hover:underline"
           >
-            {/* Hero */}
-            <div className="py-10 text-center sm:py-14">
-              <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-1.5 rounded-full border border-violet/20 bg-violet-soft px-4 py-1.5 text-sm font-semibold text-violet"
-              >
-                <Sparkles className="h-3.5 w-3.5" />
-                {dict.tagline}
-              </motion.span>
-              <motion.h1
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.08 }}
-                className="mt-6 font-display text-5xl font-bold leading-tight tracking-tight sm:text-6xl"
-              >
-                {dict.heroA} <span className="gradient-text">{dict.heroB}</span>
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.16 }}
-                className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink/55"
-              >
-                {dict.heroSub}
-              </motion.p>
-            </div>
+            Ücretsiz başla <ArrowRight className="h-5 w-5" />
+          </Link>
+        </div>
+      </section>
 
-            {/* Form kartı */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.24 }}
-              className="flex flex-col gap-9 rounded-3xl border border-ink/5 bg-white p-6 shadow-card-lg sm:p-10"
-            >
-              <StepBlock num={1} title={dict.step1}>
-                <UploadZone dict={dict} file={file} onFile={setFile} />
-              </StepBlock>
-
-              <StepBlock num={2} title={dict.step2}>
-                <JobInput
-                  dict={dict}
-                  mode={jobMode}
-                  onModeChange={setJobMode}
-                  jobUrl={jobUrl}
-                  onJobUrl={setJobUrl}
-                  jobText={jobText}
-                  onJobText={setJobText}
-                />
-              </StepBlock>
-
-              <StepBlock num={3} title={dict.step3}>
-                <div className="flex flex-col gap-5">
-                  {/* Ek notlar */}
-                  <div>
-                    <label className="mb-1.5 flex items-center gap-1.5 text-sm font-semibold text-ink/70">
-                      <PenLine className="h-4 w-4 text-violet" />
-                      {dict.extraLabel}
-                    </label>
-                    <textarea
-                      value={extraNotes}
-                      onChange={(e) => setExtraNotes(e.target.value)}
-                      placeholder={dict.extraPlaceholder}
-                      rows={3}
-                      className="w-full resize-none rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm leading-relaxed outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white"
-                    />
-                    <p className="mt-1 text-xs text-ink/40">{dict.extraHint}</p>
-                  </div>
-
-                  {/* Dil seçimi */}
-                  <div className="flex items-center gap-3">
-                    <span className="flex items-center gap-1.5 text-sm font-semibold text-ink/70">
-                      <Globe className="h-4 w-4 text-violet" />
-                      {dict.outputLang}
-                    </span>
-                    <div className="flex gap-0.5 rounded-full border border-ink/10 bg-white p-1">
-                      {(["auto", "tr", "en"] as const).map((l) => (
-                        <button
-                          key={l}
-                          onClick={() => setOutputLang(l)}
-                          className={`rounded-full px-3 py-0.5 text-xs font-bold uppercase tracking-wide transition-colors ${
-                            outputLang === l ? "bg-ink text-white" : "text-ink/50 hover:text-ink"
-                          }`}
-                        >
-                          {l === "auto" ? dict.outputAuto : l}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <motion.button
-                    whileHover={canGenerate ? { y: -2 } : {}}
-                    whileTap={canGenerate ? { scale: 0.99 } : {}}
-                    disabled={!canGenerate}
-                    onClick={generate}
-                    className="gradient-primary flex items-center justify-center gap-2.5 rounded-2xl px-8 py-4 font-display text-lg font-bold text-white shadow-glow transition-all disabled:cursor-not-allowed disabled:opacity-35 disabled:shadow-none"
-                  >
-                    <Wand2 className="h-5 w-5" />
-                    {dict.generate}
-                  </motion.button>
-
-                  {error && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="rounded-2xl border border-rose/20 bg-rose/5 px-4 py-3 text-center text-sm font-semibold text-rose"
-                    >
-                      {error}
-                    </motion.p>
-                  )}
-                </div>
-              </StepBlock>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {phase === "generating" && (
-          <GenerationOverlay dict={dict} streamedChars={streamedChars} />
-        )}
-      </AnimatePresence>
+      <footer className="border-t border-ink/5 py-8">
+        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-6 text-sm text-ink/45">
+          <span className="font-display font-bold text-ink/60">CVReady</span>
+          <span>KVKK uyumlu · İletişim bilgileri maskeli</span>
+        </div>
+      </footer>
     </main>
   );
 }
 
-function StepBlock({
-  num,
+function AudienceCard({
+  icon,
+  eyebrow,
   title,
-  children,
+  items,
+  href,
+  cta,
 }: {
-  num: number;
+  icon: React.ReactNode;
+  eyebrow: string;
   title: string;
-  children: React.ReactNode;
+  items: string[];
+  href: string;
+  cta: string;
 }) {
   return (
-    <div>
-      <div className="mb-4 flex items-center gap-3">
-        <span className="gradient-primary flex h-8 w-8 items-center justify-center rounded-lg font-display text-sm font-bold text-white">
-          {num}
-        </span>
-        <h2 className="font-display text-lg font-bold tracking-tight">{title}</h2>
-      </div>
-      {children}
+    <div className="flex flex-col rounded-3xl border border-ink/5 bg-white p-7 shadow-card">
+      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-soft">
+        {icon}
+      </span>
+      <p className="mt-4 text-xs font-bold uppercase tracking-wide text-violet">{eyebrow}</p>
+      <h3 className="mt-1 font-display text-xl font-bold tracking-tight">{title}</h3>
+      <ul className="mt-4 flex flex-1 flex-col gap-2.5">
+        {items.map((it, i) => (
+          <li key={i} className="flex gap-2 text-sm leading-relaxed text-ink/70">
+            <span className="mt-0.5 font-bold text-violet">✓</span> {it}
+          </li>
+        ))}
+      </ul>
+      <Link
+        href={href}
+        className="mt-6 inline-flex items-center gap-1.5 self-start rounded-2xl border-2 border-violet/25 bg-violet-soft px-5 py-2.5 font-display font-bold text-violet transition-colors hover:border-violet"
+      >
+        {cta} <ArrowRight className="h-4 w-4" />
+      </Link>
     </div>
   );
 }

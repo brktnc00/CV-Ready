@@ -35,7 +35,7 @@ export default function HrAuthForm() {
           setError("Giriş başarısız. E-posta veya şifre hatalı.");
           return;
         }
-        router.push("/hr/panel");
+        router.push("/panel");
         router.refresh();
       } else {
         const { data, error: e } = await supabase.auth.signUp({
@@ -43,7 +43,7 @@ export default function HrAuthForm() {
           password,
           options: {
             data: { role: "recruiter", full_name: fullName.trim(), company_name: company.trim() },
-            emailRedirectTo: `${window.location.origin}/auth/callback?next=/hr/panel`,
+            emailRedirectTo: `${window.location.origin}/auth/callback?next=/panel`,
           },
         });
         if (e) {
@@ -52,7 +52,7 @@ export default function HrAuthForm() {
         }
         // E-posta doğrulaması kapalıysa oturum döner → panele geç.
         if (data.session) {
-          router.push("/hr/panel");
+          router.push("/panel");
           router.refresh();
         } else {
           setInfo("Hesabını doğrulamak için e-postana gönderdiğimiz bağlantıya tıkla.");

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText, Inbox } from "lucide-react";
+import { Inbox } from "lucide-react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import AccountCvCard from "@/components/AccountCvCard";
 import InboxCard, { type RequestRow } from "@/components/InboxCard";
@@ -19,21 +19,7 @@ export interface PublishedRow {
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <main className="min-h-screen dotted-bg">
-      <header className="mx-auto flex w-full max-w-4xl items-center justify-between px-6 py-6">
-        <Link href="/" className="flex items-center gap-2.5 font-display text-xl font-bold">
-          <span className="gradient-primary flex h-9 w-9 items-center justify-center rounded-xl shadow-glow">
-            <FileText className="h-5 w-5 text-white" />
-          </span>
-          CV<span className="gradient-text">Ready</span>
-        </Link>
-        <Link
-          href="/"
-          className="rounded-full border border-ink/10 bg-white px-4 py-1.5 text-sm font-semibold text-ink/60 shadow-card transition-colors hover:text-ink"
-        >
-          ← Ana sayfa
-        </Link>
-      </header>
-      <div className="mx-auto w-full max-w-4xl px-6 pb-24">{children}</div>
+      <div className="mx-auto w-full max-w-4xl px-6 pb-24 pt-8">{children}</div>
     </main>
   );
 }
@@ -63,7 +49,7 @@ export default async function AccountPage() {
             CV'ni yayınlamak ve yönetmek için önce ana sayfadan bir CV oluştur.
           </p>
           <Link
-            href="/"
+            href="/olustur"
             className="gradient-primary mt-5 inline-block rounded-2xl px-6 py-3 font-display font-bold text-white shadow-glow"
           >
             CV oluştur
@@ -98,7 +84,7 @@ export default async function AccountPage() {
         <div className="rounded-3xl border border-ink/5 bg-white p-8 text-center shadow-card">
           <p className="text-ink/60">Henüz yayınlanmış bir CV'n yok.</p>
           <Link
-            href="/"
+            href="/olustur"
             className="gradient-primary mt-5 inline-block rounded-2xl px-6 py-3 font-display font-bold text-white shadow-glow"
           >
             CV oluştur ve yayınla

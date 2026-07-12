@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Target } from "lucide-react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
-import HrHeader from "@/components/HrHeader";
 import ContactButton from "@/components/ContactButton";
 import type { TailoredCV } from "@/lib/cv-schema";
 
@@ -15,21 +14,21 @@ export default async function CandidateDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  if (!isSupabaseConfigured()) redirect("/hr");
+  if (!isSupabaseConfigured()) redirect("/isverenler");
   const { id } = await params;
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/hr");
+  if (!user) redirect("/isverenler");
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("role, company_name")
     .eq("id", user.id)
     .single();
-  if (profile?.role !== "recruiter") redirect("/hr");
+  if (profile?.role !== "recruiter") redirect("/isverenler");
 
   const { data: row } = await supabase
     .from("published_cvs")
@@ -43,11 +42,9 @@ export default async function CandidateDetailPage({
 
   return (
     <main className="min-h-screen dotted-bg">
-      <HrHeader company={profile?.company_name} />
-
-      <div className="mx-auto w-full max-w-3xl px-6 pb-24">
+      <div className="mx-auto w-full max-w-3xl px-6 pb-24 pt-8">
         <Link
-          href="/hr/panel"
+          href="/panel"
           className="mb-6 inline-flex items-center gap-1.5 text-sm font-semibold text-ink/50 transition-colors hover:text-ink"
         >
           <ArrowLeft className="h-4 w-4" /> Aday havuzuna dön

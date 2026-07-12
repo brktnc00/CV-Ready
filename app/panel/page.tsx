@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Search, MapPin, Languages, SlidersHorizontal, Frown } from "lucide-react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
-import HrHeader from "@/components/HrHeader";
 import CandidateCard, { type CandidateCardData } from "@/components/CandidateCard";
 import { DEMO_CANDIDATES } from "@/lib/demo-candidates";
 
@@ -26,11 +24,9 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
   const demo = sp.demo === "1";
 
   let candidates: CandidateCardData[] = [];
-  let company: string | null = null;
 
   if (demo) {
     // Supabase olmadan tasarımı görmek için örnek adaylar.
-    company = "Demo Şirket";
     const q = sanitize(sp.q ?? "").toLowerCase();
     const location = sanitize(sp.location ?? "").toLowerCase();
     const lang = sanitize(sp.lang ?? "").toLowerCase();
@@ -43,20 +39,19 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
       return true;
     });
   } else {
-    if (!isSupabaseConfigured()) redirect("/hr");
+    if (!isSupabaseConfigured()) redirect("/isverenler");
     const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) redirect("/hr");
+    if (!user) redirect("/isverenler");
 
     const { data: profile } = await supabase
       .from("profiles")
       .select("role, company_name")
       .eq("id", user.id)
       .single();
-    if (profile?.role !== "recruiter") redirect("/hr");
-    company = profile?.company_name ?? null;
+    if (profile?.role !== "recruiter") redirect("/isverenler");
 
     const q = sanitize(sp.q ?? "");
     const location = sanitize(sp.location ?? "");
@@ -81,22 +76,18 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
 
   return (
     <main className="min-h-screen dotted-bg">
-      {demo ? (
-        <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
-          <Link href="/" className="font-display text-xl font-bold">
-            CV<span className="gradient-text">Ready</span> <span className="text-ink/40">İK</span>
-          </Link>
-          <span className="rounded-full bg-amber/10 px-3 py-1 text-xs font-bold text-amber">
-            DEMO GÖRÜNÜM
-          </span>
-        </header>
-      ) : (
-        <HrHeader company={company} />
-      )}
-
-      <div className="mx-auto w-full max-w-6xl px-6 pb-24">
-        <h1 className="mb-1 font-display text-3xl font-bold tracking-tight">Aday havuzu</h1>
-        <p className="mb-6 text-ink/55">{candidates.length} aday listeleniyor</p>
+      <div className="mx-auto w-full max-w-6xl px-6 pb-24 pt-8">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="mb-1 font-display text-3xl font-bold tracking-tight">Aday havuzu</h1>
+            <p className="text-ink/55">{candidates.length} aday listeleniyor</p>
+          </div>
+          {demo && (
+            <span className="rounded-full bg-amber/10 px-3 py-1 text-xs font-bold text-amber">
+              DEMO GÖRÜNÜM
+            </span>
+          )}
+        </div>
 
         {/* Filtreler — sunucu tarafı GET formu */}
         <form className="mb-8 grid gap-3 rounded-3xl border border-ink/5 bg-white p-5 shadow-card sm:grid-cols-2 lg:grid-cols-4">

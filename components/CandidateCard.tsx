@@ -47,7 +47,7 @@ export default function CandidateCard({ c, demo = false }: { c: CandidateCardDat
     .filter(Boolean)
     .slice(0, 5);
 
-  const href = demo ? "#" : `/hr/aday/${c.id}`;
+  const href = demo ? "#" : `/panel/aday/${c.id}`;
 
   return (
     <Link

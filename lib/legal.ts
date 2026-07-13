@@ -54,7 +54,8 @@ export const legal: Record<Lang, LegalDict> = {
     emailLabel: "E-posta adresin",
     emailPlaceholder: "ornek@eposta.com",
     sendCodeBtn: "Doğrulama kodu gönder",
-    codeSentNote: "E-postana 6 haneli bir kod gönderdik. Aşağıya gir.",
+    codeSentNote:
+      "E-postana bir doğrulama gönderdik. Maildeki bağlantıya tıkla — bu pencere otomatik olarak devam edecek. Mailde 6 haneli kod varsa aşağıya da girebilirsin.",
     codeLabel: "Doğrulama kodu",
     codePlaceholder: "6 haneli kod",
     verifyPublishBtn: "Doğrula ve yayınla",
@@ -89,7 +90,8 @@ export const legal: Record<Lang, LegalDict> = {
     emailLabel: "Your email address",
     emailPlaceholder: "you@example.com",
     sendCodeBtn: "Send verification code",
-    codeSentNote: "We sent a 6-digit code to your email. Enter it below.",
+    codeSentNote:
+      "We sent a verification email. Click the link in it — this window will continue automatically. If the email contains a 6-digit code, you can also enter it below.",
     codeLabel: "Verification code",
     codePlaceholder: "6-digit code",
     verifyPublishBtn: "Verify & publish",

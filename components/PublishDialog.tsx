@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, ShieldCheck, Mail, KeyRound, Loader2, PartyPopper } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -29,17 +29,44 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  const published = useRef(false);
+
   const doPublish = async () => {
+    if (published.current) return;
+    published.current = true;
     setError(null);
     setStep("publishing");
     const res = await publishCV(cv, true);
     if ("id" in res) {
       setStep("done");
     } else {
+      published.current = false;
       setError(L.errGeneric);
       setStep("code");
     }
   };
+
+  // Maildeki bağlantı başka sekmede oturum açar; oturum tarayıcıda ortak
+  // olduğundan bu sekme SIGNED_IN olayını yakalayıp yayına otomatik devam eder.
+  useEffect(() => {
+    if (step !== "code") return;
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") void doPublish();
+    });
+    const interval = setInterval(async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) void doPublish();
+    }, 2000);
+    return () => {
+      subscription.unsubscribe();
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   // Rıza sonrası: zaten giriş yapılmışsa doğrudan yayınla, değilse e-posta iste.
   const afterConsent = async () => {
@@ -67,6 +94,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
       email: email.trim(),
       options: {
         shouldCreateUser: true,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/hesabim`,
         data: { role: "candidate", full_name: cv.fullName },
       },
     });

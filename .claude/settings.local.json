@@ -27,7 +27,9 @@
       "Bash(npx shadcn@latest add form field)",
       "Bash(npm pkg *)",
       "Bash(npm test *)",
-      "Bash(npx playwright *)"
+      "Bash(npx playwright *)",
+      "Bash(npm i *)",
+      "Bash(npx shadcn@latest add checkbox collapsible)"
     ]
   }
 }

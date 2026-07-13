@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { ShieldAlert, LayoutDashboard, Users, FileStack, Send } from "lucide-react";
+import { ShieldAlert, LayoutDashboard, TrendingUp, Users, FileStack, Send } from "lucide-react";
 import { requireAdmin } from "@/lib/admin";
 
 export const dynamic = "force-dynamic";
 
 const TABS = [
   { href: "/admin", label: "Özet", icon: LayoutDashboard },
+  { href: "/admin/analitik", label: "Analitik", icon: TrendingUp },
   { href: "/admin/kullanicilar", label: "Kullanıcılar", icon: Users },
   { href: "/admin/cvler", label: "CV'ler", icon: FileStack },
   { href: "/admin/talepler", label: "Talepler", icon: Send },

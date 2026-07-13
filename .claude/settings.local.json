@@ -14,7 +14,20 @@
       "Bash(rm -f ~/Downloads/Ayşe_Yılmaz_CV*.pdf && echo temizlendi)",
       "Bash(node -e ' *)",
       "Bash(rm -f ~/Downloads/Ayşe_Yılmaz_CV*.pdf 2>/dev/null; echo \"temizlendi\")",
-      "Bash(echo \"tsc exit: $?\")"
+      "Bash(echo \"tsc exit: $?\")",
+      "Read(//Users/buraktunc/wsbuilder/**)",
+      "Read(//Users/buraktunc/**)",
+      "Bash(npx --yes create-next-app@15 . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --turbopack --use-npm --yes)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\({deps:p.dependencies, dev:p.devDependencies},null,1\\)\\)\")",
+      "Bash(npx --yes shadcn@latest init --base-color neutral --yes)",
+      "Bash(npx shadcn@latest init --help)",
+      "Bash(npx shadcn@latest init -y -b radix --css-variables)",
+      "Bash(npx shadcn@latest init -y -b radix -p nova --css-variables)",
+      "Bash(npx shadcn@latest add button input label dialog form select slider switch tabs tooltip separator badge card)",
+      "Bash(npx shadcn@latest add form field)",
+      "Bash(npm pkg *)",
+      "Bash(npm test *)",
+      "Bash(npx playwright *)"
     ]
   }
 }

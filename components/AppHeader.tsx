@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { FileText, LogOut, Sparkles } from "lucide-react";
+import { FileText, LogOut, Sparkles, ShieldAlert } from "lucide-react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { signOut } from "@/app/actions/auth";
 
-type Role = "recruiter" | "candidate" | null;
+type Role = "recruiter" | "candidate" | "admin" | null;
 
 // Oturuma duyarlı global üst-bar. Tüm sayfalarda root layout üzerinden render edilir.
 // Supabase yapılandırılmamışsa yalnızca marka + "CV oluştur" gösterir (araç modu).
@@ -22,7 +22,12 @@ export default async function AppHeader() {
         .select("role, company_name")
         .eq("id", user.id)
         .single();
-      role = profile?.role === "recruiter" ? "recruiter" : "candidate";
+      role =
+        profile?.role === "recruiter"
+          ? "recruiter"
+          : profile?.role === "admin"
+            ? "admin"
+            : "candidate";
       company = profile?.company_name ?? null;
     }
   }
@@ -39,7 +44,16 @@ export default async function AppHeader() {
         </Link>
 
         <nav className="flex items-center gap-1 sm:gap-2">
-          {role === "recruiter" ? (
+          {role === "admin" ? (
+            <>
+              <NavLink href="/admin">
+                <span className="flex items-center gap-1.5">
+                  <ShieldAlert className="h-4 w-4 text-rose" /> Yönetim
+                </span>
+              </NavLink>
+              <SignOutButton />
+            </>
+          ) : role === "recruiter" ? (
             <>
               <NavLink href="/panel">Aday havuzu</NavLink>
               <NavLink href="/panel/talepler">Taleplerim</NavLink>

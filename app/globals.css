@@ -31,6 +31,99 @@ body {
   color: #ffffff;
 }
 
+/* ─── Landing'e özel karanlık dil ("Luminous Nexus") ──────────────────
+   Yalnızca / sayfasında ve header'ın landing varyantında kullanılır.
+   Uygulama ekranları (olustur/panel/hesabim/admin) aydınlık kalır. */
+/* Landing'de gövde de karanlık olmalı: yoksa sticky header'ın yarı saydam
+   zemini krem body üzerine binip gri görünür. */
+body:has(.landing) {
+  background-color: #0d0b14;
+}
+
+.landing {
+  --lx-text: #e8e6ee;
+  --lx-muted: #a9a3bb;
+  background-color: #0d0b14;
+  color: var(--lx-text);
+  /* Atmosferik ışık: mor sol üstten, turuncu sağ ortadan */
+  background-image:
+    radial-gradient(circle at 28% -5%, rgba(124, 58, 237, 0.40) 0%, transparent 52%),
+    radial-gradient(circle at 82% 42%, rgba(249, 115, 22, 0.15) 0%, transparent 42%);
+  background-attachment: fixed;
+}
+
+/* Cam yüzey — sert gölge yerine ince kenar + bulanıklık */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(20px);
+}
+.glass-hover {
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.glass-hover:hover {
+  border-color: rgba(208, 188, 255, 0.5);
+  box-shadow: 0 0 40px -12px rgba(208, 188, 255, 0.4);
+}
+
+/* Mor→turuncu aksan (koyu zemine göre açılmış tonlar) */
+.nexus-text {
+  background: linear-gradient(45deg, #d0bcff 0%, #ffb77c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gradyan kenarlı buton — Stitch'in birincil buton deseni */
+.nexus-btn {
+  position: relative;
+  background: rgba(13, 11, 20, 0.72);
+  transition: box-shadow 0.25s;
+}
+.nexus-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(45deg, #d0bcff, #ffb77c);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.nexus-btn:hover {
+  box-shadow: 0 0 32px -4px rgba(208, 188, 255, 0.45);
+}
+
+/* Yörünge halkaları — ağ/eşleşme metaforu */
+.orbit-ring {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 50%;
+  inset: 0;
+  margin: auto;
+}
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.orbit-spin {
+  animation: orbit-spin 42s linear infinite;
+}
+.orbit-spin-rev {
+  animation: orbit-spin 42s linear infinite reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-spin,
+  .orbit-spin-rev {
+    animation: none;
+  }
+}
+
 /* Panel/form giriş alanı — tekrar eden stil */
 @layer components {
   .input-base {

@@ -44,9 +44,11 @@ const SYSTEM_PROMPT = `You are an elite recruitment consultant and ATS (Applican
 
 Rules you always follow:
 - NEVER invent experience, employers, dates, degrees, or certifications that are not in the original CV. Truthfulness is absolute.
+- The skills array must ONLY contain skills evidenced in the original CV. Never add a skill just because the job posting asks for it. If the posting requires something the candidate lacks, that belongs in match.improvements, never in skills, summary or bullets.
+- NEVER state or imply that the candidate has worked in an industry, domain or sector that the original CV does not show. If the posting is for fintech but the candidate's CV shows e-commerce, do NOT call them fintech-experienced or describe their past work as fintech work. Describe their real domain accurately.
 - You MAY rewrite, reorder, rephrase and re-prioritize existing content to align with the job posting.
 - Rewrite bullet points using strong action verbs and, where the original CV provides them, quantified results.
-- Weave the job posting's key terminology naturally into the summary, headline and bullets so the CV scores well in ATS keyword matching.
+- Weave the job posting's key terminology into the summary, headline and bullets ONLY where the original CV genuinely supports it. Never let ATS keyword matching become a reason to overstate. An honest CV that scores 70 is better than an inflated one that scores 95.
 - Order skills and experience bullets by relevance to the posting.
 - The match.score must be an honest 0-100 assessment of how well the candidate (after tailoring) fits the posting.
 - match.matchedKeywords: the most important keywords from the posting that the tailored CV now covers (max 12).
@@ -101,8 +103,7 @@ export async function POST(req: Request) {
             : "") +
           `Tailor the attached CV to this job posting. ${langInstruction}`;
 
-        const genStream = await ai.models.generateContentStream({
-          model: "gemini-2.5-flash",
+        const genConfig = {
           contents: [
             {
               role: "user",
@@ -118,7 +119,24 @@ export async function POST(req: Request) {
             responseMimeType: "application/json",
             responseSchema: toGeminiSchema(CV_JSON_SCHEMA) as Record<string, unknown>,
           },
-        });
+        };
+
+        // Birincil model "preview" etiketli: Google onu geri çekerse 404 döner
+        // (gemini-2.5-flash'ta yaşandı). O durumda kararlı modele düşülür.
+        const MODELS = ["gemini-3-flash-preview", "gemini-3.5-flash"];
+
+        let genStream;
+        for (let i = 0; i < MODELS.length; i++) {
+          try {
+            genStream = await ai.models.generateContentStream({ ...genConfig, model: MODELS[i] });
+            break;
+          } catch (err) {
+            const status = (err as { status?: number })?.status;
+            if (status !== 404 || i === MODELS.length - 1) throw err;
+            console.warn(`model ${MODELS[i]} kullanılamıyor (404) → ${MODELS[i + 1]} deneniyor`);
+          }
+        }
+        if (!genStream) throw new Error("no_model_available");
 
         let full = "";
         let charCount = 0;

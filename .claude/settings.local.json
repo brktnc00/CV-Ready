@@ -29,7 +29,9 @@
       "Bash(npm test *)",
       "Bash(npx playwright *)",
       "Bash(npm i *)",
-      "Bash(npx shadcn@latest add checkbox collapsible)"
+      "Bash(npx shadcn@latest add checkbox collapsible)",
+      "Bash(npx shadcn@latest add textarea --yes)",
+      "Bash(npx vitest *)"
     ]
   }
 }

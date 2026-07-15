@@ -134,3 +134,18 @@ export const CV_JSON_SCHEMA = {
   ],
   additionalProperties: false,
 } as const;
+
+// Gemini'nin responseSchema'sı JSON Schema'nın bir alt kümesini kabul eder;
+// additionalProperties'i tanımaz. Şemayı özyinelemeli temizler.
+export function toGeminiSchema(schema: unknown): unknown {
+  if (Array.isArray(schema)) return schema.map(toGeminiSchema);
+  if (schema && typeof schema === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(schema)) {
+      if (k === "additionalProperties") continue;
+      out[k] = toGeminiSchema(v);
+    }
+    return out;
+  }
+  return schema;
+}

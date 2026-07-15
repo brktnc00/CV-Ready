@@ -1,5 +1,5 @@
-import Anthropic from "@anthropic-ai/sdk";
-import { CV_JSON_SCHEMA } from "@/lib/cv-schema";
+import { GoogleGenAI } from "@google/genai";
+import { CV_JSON_SCHEMA, toGeminiSchema } from "@/lib/cv-schema";
 
 export const maxDuration = 300;
 export const runtime = "nodejs";
@@ -58,7 +58,7 @@ Rules you always follow:
 export async function POST(req: Request) {
   const body = (await req.json()) as GenerateRequest;
 
-  if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY.includes("YAPISTIRIN")) {
+  if (!process.env.GEMINI_API_KEY) {
     return Response.json({ error: "no_api_key" }, { status: 500 });
   }
   if (!body.cvBase64) {
@@ -85,7 +85,7 @@ export async function POST(req: Request) {
         ? "Write the tailored CV in Turkish."
         : "Write the tailored CV in English.";
 
-  const client = new Anthropic();
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   const encoder = new TextEncoder();
 
   // 2) NDJSON akışı: { type: "progress" | "complete" | "error", ... }
@@ -94,68 +94,52 @@ export async function POST(req: Request) {
       const send = (obj: unknown) =>
         controller.enqueue(encoder.encode(JSON.stringify(obj) + "\n"));
       try {
-        const msgStream = client.messages.stream({
-          model: "claude-sonnet-5",
-          max_tokens: 32_000,
-          thinking: { type: "adaptive" },
-          system: SYSTEM_PROMPT,
-          output_config: {
-            format: {
-              type: "json_schema",
-              schema: CV_JSON_SCHEMA as unknown as Record<string, unknown>,
-            },
-          },
-          messages: [
+        const userText =
+          `Here is the job posting:\n\n<job_posting>\n${jobText}\n</job_posting>\n\n` +
+          (body.extraNotes?.trim()
+            ? `The candidate also wants the following added to their CV:\n\n<candidate_notes>\n${body.extraNotes.trim().slice(0, 4000)}\n</candidate_notes>\n\n`
+            : "") +
+          `Tailor the attached CV to this job posting. ${langInstruction}`;
+
+        const genStream = await ai.models.generateContentStream({
+          model: "gemini-2.5-flash",
+          contents: [
             {
               role: "user",
-              content: [
-                {
-                  type: "document",
-                  source: {
-                    type: "base64",
-                    media_type: "application/pdf",
-                    data: body.cvBase64,
-                  },
-                },
-                {
-                  type: "text",
-                  text:
-                    `Here is the job posting:\n\n<job_posting>\n${jobText}\n</job_posting>\n\n` +
-                    (body.extraNotes?.trim()
-                      ? `The candidate also wants the following added to their CV:\n\n<candidate_notes>\n${body.extraNotes.trim().slice(0, 4000)}\n</candidate_notes>\n\n`
-                      : "") +
-                    `Tailor the attached CV to this job posting. ${langInstruction}`,
-                },
+              parts: [
+                { inlineData: { mimeType: "application/pdf", data: body.cvBase64 } },
+                { text: userText },
               ],
             },
           ],
+          config: {
+            systemInstruction: SYSTEM_PROMPT,
+            maxOutputTokens: 32_000,
+            responseMimeType: "application/json",
+            responseSchema: toGeminiSchema(CV_JSON_SCHEMA) as Record<string, unknown>,
+          },
         });
 
+        let full = "";
         let charCount = 0;
-        msgStream.on("text", (delta) => {
+        for await (const chunk of genStream) {
+          const delta = chunk.text ?? "";
+          if (!delta) continue;
+          full += delta;
           charCount += delta.length;
           // Her ~400 karakterde bir ilerleme bildir (animasyonu beslemek için)
           if (charCount % 400 < delta.length) {
             send({ type: "progress", chars: charCount });
           }
-        });
-
-        const final = await msgStream.finalMessage();
-
-        if (final.stop_reason === "refusal") {
-          send({ type: "error", error: "refusal" });
-          controller.close();
-          return;
         }
 
-        const textBlock = final.content.find((b) => b.type === "text");
-        if (!textBlock || textBlock.type !== "text") {
+        if (!full.trim()) {
           send({ type: "error", error: "empty_response" });
           controller.close();
           return;
         }
 
-        const cv = JSON.parse(textBlock.text);
+        const cv = JSON.parse(full);
         send({ type: "complete", cv });
         controller.close();
       } catch (err) {

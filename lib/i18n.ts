@@ -56,7 +56,7 @@ export const t = {
     errorGeneric: "Bir şeyler ters gitti. Lütfen tekrar dene.",
     errorFetch:
       "İlan sayfası çekilemedi (site engelliyor olabilir). İlan metnini yapıştırarak dene.",
-    errorNoKey: "API anahtarı bulunamadı. .env.local dosyasına ANTHROPIC_API_KEY ekleyin.",
+    errorNoKey: "API anahtarı bulunamadı. .env.local dosyasına GEMINI_API_KEY ekleyin.",
     experience: "Deneyim",
     education: "Eğitim",
     skills: "Yetenekler",
@@ -120,7 +120,7 @@ export const t = {
     errorGeneric: "Something went wrong. Please try again.",
     errorFetch:
       "Couldn't fetch the job page (the site may be blocking us). Try pasting the job text instead.",
-    errorNoKey: "API key not found. Add ANTHROPIC_API_KEY to .env.local.",
+    errorNoKey: "API key not found. Add GEMINI_API_KEY to .env.local.",
     experience: "Experience",
     education: "Education",
     skills: "Skills",

@@ -127,7 +127,7 @@ export default function GenerationOverlay({ dict, streamedChars }: Props) {
                     ? "bg-mint text-white"
                     : i === activeStage
                       ? "gradient-primary text-white"
-                      : "border border-ink/10 bg-white text-ink/40"
+                      : "border border-ink/10 bg-white/[0.06] text-ink/40"
                 }`}
               >
                 {i < activeStage ? (
@@ -162,7 +162,7 @@ export default function GenerationOverlay({ dict, streamedChars }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-sm font-medium text-ink/60 shadow-card"
+            className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white/[0.06] px-4 py-2 text-sm font-medium text-ink/60 shadow-card"
           >
             <Info className="h-3.5 w-3.5 shrink-0 text-violet" />
             {dict.funFacts[factIndex]}

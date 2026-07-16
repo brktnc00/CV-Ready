@@ -68,7 +68,7 @@ export default function UploadZone({ dict, file, onFile }: Props) {
             <CheckCircle2 className="h-9 w-9 text-mint" />
             <span className="font-display text-base font-bold">{dict.uploadReady}</span>
             <span className="max-w-full truncate text-sm text-ink/55">{file.name}</span>
-            <span className="mt-1 rounded-full border border-ink/15 bg-white px-3 py-0.5 text-xs font-semibold text-ink/70">
+            <span className="mt-1 rounded-full border border-ink/15 bg-white/[0.06] px-3 py-0.5 text-xs font-semibold text-ink/70">
               {dict.uploadChange}
             </span>
           </div>

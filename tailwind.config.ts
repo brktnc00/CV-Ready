@@ -8,29 +8,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: "#FDFAF5",
-        ink: "#1E1B2E",
-        // Rafine marka paleti: mor birincil, pembe/turuncu vurgu, yeşil başarı
+        // "Luminous Nexus" karanlık tema: token anlamları korunur —
+        // ink = ön plan (artık açık), cream = zemin (artık karanlık).
+        // Böylece text-ink/60, border-ink/5, bg-cream/60 gibi yüzlerce
+        // kullanım otomatik olarak doğru kontrasta oturur.
+        cream: "#0D0B14",
+        ink: "#E8E6EE",
         violet: {
-          DEFAULT: "#7C3AED",
-          soft: "#F3EDFD",
+          DEFAULT: "#B79DFF",
+          soft: "#2A2150",
         },
-        rose: "#DB2777",
-        amber: "#F97316",
+        rose: "#FB7185",
+        amber: "#FFA94D",
         mint: {
-          DEFAULT: "#10B981",
-          soft: "#E7F8F1",
+          DEFAULT: "#34D399",
+          soft: "#0E2E22",
         },
-        skyblue: "#0EA5E9",
+        skyblue: "#38BDF8",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
         body: ["var(--font-body)", "sans-serif"],
       },
       boxShadow: {
-        card: "0 1px 2px rgba(30,27,46,0.04), 0 8px 24px -8px rgba(30,27,46,0.10)",
-        "card-lg": "0 2px 4px rgba(30,27,46,0.04), 0 16px 48px -12px rgba(30,27,46,0.16)",
-        glow: "0 8px 32px -8px rgba(124,58,237,0.45)",
+        card: "0 1px 2px rgba(0,0,0,0.35), 0 8px 24px -8px rgba(0,0,0,0.45)",
+        "card-lg": "0 2px 4px rgba(0,0,0,0.35), 0 16px 48px -12px rgba(0,0,0,0.6)",
+        glow: "0 8px 32px -8px rgba(151,113,255,0.4)",
       },
     },
   },

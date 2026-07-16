@@ -3,13 +3,18 @@
 @tailwind utilities;
 
 body {
-  background-color: #fdfaf5;
-  color: #1e1b2e;
+  background-color: #0d0b14;
+  color: #e8e6ee;
+  /* Atmosferik ışık: mor sol üstten, turuncu sağ ortadan — tüm ekranlarda */
+  background-image:
+    radial-gradient(circle at 28% -5%, rgba(124, 58, 237, 0.32) 0%, transparent 52%),
+    radial-gradient(circle at 82% 42%, rgba(249, 115, 22, 0.10) 0%, transparent 42%);
+  background-attachment: fixed;
 }
 
 /* İnce noktalı doku — arka plana derinlik verir, dikkat çekmez */
 .dotted-bg {
-  background-image: radial-gradient(rgba(30, 27, 46, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -31,25 +36,12 @@ body {
   color: #ffffff;
 }
 
-/* ─── Landing'e özel karanlık dil ("Luminous Nexus") ──────────────────
-   Yalnızca / sayfasında ve header'ın landing varyantında kullanılır.
-   Uygulama ekranları (olustur/panel/hesabim/admin) aydınlık kalır. */
-/* Landing'de gövde de karanlık olmalı: yoksa sticky header'ın yarı saydam
-   zemini krem body üzerine binip gri görünür. */
-body:has(.landing) {
-  background-color: #0d0b14;
-}
-
+/* ─── "Luminous Nexus" karanlık dili ──────────────────────────────────
+   Artık tüm site karanlık: zemin/ışık body'de. .landing yalnızca
+   landing'in kullandığı metin değişkenlerini taşır. */
 .landing {
   --lx-text: #e8e6ee;
   --lx-muted: #a9a3bb;
-  background-color: #0d0b14;
-  color: var(--lx-text);
-  /* Atmosferik ışık: mor sol üstten, turuncu sağ ortadan */
-  background-image:
-    radial-gradient(circle at 28% -5%, rgba(124, 58, 237, 0.40) 0%, transparent 52%),
-    radial-gradient(circle at 82% 42%, rgba(249, 115, 22, 0.15) 0%, transparent 42%);
-  background-attachment: fixed;
 }
 
 /* Cam yüzey — sert gölge yerine ince kenar + bulanıklık */
@@ -127,6 +119,6 @@ body:has(.landing) {
 /* Panel/form giriş alanı — tekrar eden stil */
 @layer components {
   .input-base {
-    @apply w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white;
+    @apply w-full rounded-2xl border border-ink/10 bg-black/30 px-4 py-3 text-sm outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-black/50;
   }
 }

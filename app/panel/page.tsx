@@ -90,7 +90,7 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
         </div>
 
         {/* Filtreler — sunucu tarafı GET formu */}
-        <form className="mb-8 grid gap-3 rounded-3xl border border-ink/5 bg-white p-5 shadow-card sm:grid-cols-2 lg:grid-cols-4">
+        <form className="mb-8 grid gap-3 rounded-3xl border border-ink/5 bg-white/[0.06] p-5 shadow-card sm:grid-cols-2 lg:grid-cols-4">
           {demo && <input type="hidden" name="demo" value="1" />}
           <FilterField icon={<Search className="h-3.5 w-3.5 text-violet" />} label="Yetenek / unvan">
             <input name="q" defaultValue={sp.q ?? ""} placeholder="React, ürün müdürü..." className="input-base" />
@@ -123,7 +123,7 @@ export default async function PanelPage({ searchParams }: { searchParams: Promis
         </form>
 
         {candidates.length === 0 ? (
-          <div className="flex flex-col items-center gap-2 rounded-3xl border border-ink/5 bg-white py-16 text-center shadow-card">
+          <div className="flex flex-col items-center gap-2 rounded-3xl border border-ink/5 bg-white/[0.06] py-16 text-center shadow-card">
             <Frown className="h-10 w-10 text-ink/30" />
             <p className="font-semibold text-ink/60">Bu filtrelerle aday bulunamadı.</p>
           </div>

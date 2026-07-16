@@ -151,7 +151,7 @@ export default function Home() {
     <main className="min-h-screen dotted-bg">
       {/* Dil değiştirici (global header markanın altında) */}
       <div className="mx-auto flex w-full max-w-5xl items-center justify-end px-6 pt-5">
-        <div className="flex items-center gap-0.5 rounded-full border border-ink/10 bg-white p-1 shadow-card">
+        <div className="flex items-center gap-0.5 rounded-full border border-ink/10 bg-white/[0.06] p-1 shadow-card">
           {(["tr", "en"] as const).map((l) => (
             <button
               key={l}
@@ -208,7 +208,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.24 }}
-              className="flex flex-col gap-9 rounded-3xl border border-ink/5 bg-white p-6 shadow-card-lg sm:p-10"
+              className="flex flex-col gap-9 rounded-3xl border border-ink/5 bg-white/[0.06] p-6 shadow-card-lg sm:p-10"
             >
               <StepBlock num={1} title={dict.step1}>
                 <UploadZone dict={dict} file={file} onFile={setFile} />
@@ -239,7 +239,7 @@ export default function Home() {
                       onChange={(e) => setExtraNotes(e.target.value)}
                       placeholder={dict.extraPlaceholder}
                       rows={3}
-                      className="w-full resize-none rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm leading-relaxed outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white"
+                      className="w-full resize-none rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm leading-relaxed outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white/[0.06]"
                     />
                     <p className="mt-1 text-xs text-ink/40">{dict.extraHint}</p>
                   </div>
@@ -250,7 +250,7 @@ export default function Home() {
                       <Globe className="h-4 w-4 text-violet" />
                       {dict.outputLang}
                     </span>
-                    <div className="flex gap-0.5 rounded-full border border-ink/10 bg-white p-1">
+                    <div className="flex gap-0.5 rounded-full border border-ink/10 bg-white/[0.06] p-1">
                       {(["auto", "tr", "en"] as const).map((l) => (
                         <button
                           key={l}

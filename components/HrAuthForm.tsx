@@ -64,7 +64,7 @@ export default function HrAuthForm() {
   };
 
   return (
-    <div className="rounded-3xl border border-ink/5 bg-white p-7 shadow-card-lg sm:p-8">
+    <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-7 shadow-card-lg sm:p-8">
       <div className="mb-6 flex gap-1 rounded-full border border-ink/10 bg-cream/60 p-1">
         {(["login", "signup"] as const).map((m) => (
           <button

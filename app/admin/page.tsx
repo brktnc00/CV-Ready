@@ -45,7 +45,7 @@ export default async function AdminOverviewPage() {
       {stats.map((s) => (
         <div
           key={s.label}
-          className="rounded-3xl border border-ink/5 bg-white p-5 shadow-card"
+          className="rounded-3xl border border-ink/5 bg-white/[0.06] p-5 shadow-card"
         >
           <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${s.cls}`}>
             <s.icon className="h-5 w-5" />

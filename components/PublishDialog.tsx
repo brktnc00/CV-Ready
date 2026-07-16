@@ -127,7 +127,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div
@@ -136,7 +136,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: "spring", stiffness: 300, damping: 26 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-ink/5 bg-white p-7 shadow-card-lg sm:p-8"
+        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/10 bg-[#16121f] p-7 shadow-card-lg sm:p-8"
       >
         <button
           onClick={onClose}
@@ -218,7 +218,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={L.emailPlaceholder}
-                className="w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm outline-none transition-colors focus:border-violet/40 focus:bg-white"
+                className="w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm outline-none transition-colors focus:border-violet/40 focus:bg-white/[0.06]"
               />
               {error && <p className="mt-3 text-sm font-semibold text-rose">{error}</p>}
               <button
@@ -249,7 +249,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
                 value={code}
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 placeholder={L.codePlaceholder}
-                className="w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-center text-lg font-bold tracking-[0.5em] outline-none transition-colors focus:border-violet/40 focus:bg-white"
+                className="w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-center text-lg font-bold tracking-[0.5em] outline-none transition-colors focus:border-violet/40 focus:bg-white/[0.06]"
               />
               {error && <p className="mt-3 text-sm font-semibold text-rose">{error}</p>}
               <button

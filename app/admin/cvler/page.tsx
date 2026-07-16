@@ -36,7 +36,7 @@ export default async function AdminCvsPage() {
       </p>
 
       {rows.length === 0 ? (
-        <div className="rounded-3xl border border-ink/5 bg-white p-10 text-center text-ink/55 shadow-card">
+        <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-10 text-center text-ink/55 shadow-card">
           Henüz yayınlanmış CV yok.
         </div>
       ) : (
@@ -44,7 +44,7 @@ export default async function AdminCvsPage() {
           {rows.map((r) => (
             <div
               key={r.id}
-              className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-ink/5 bg-white p-4 shadow-card sm:p-5"
+              className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-ink/5 bg-white/[0.06] p-4 shadow-card sm:p-5"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">

@@ -113,7 +113,7 @@ export default async function AdminAnalyticsPage() {
       {/* KPI şeridi */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {kpis.map((k) => (
-          <div key={k.label} className="rounded-2xl border border-ink/5 bg-white/[0.06] p-4 shadow-card">
+          <div key={k.label} className="rounded-2xl border border-ink/5 bg-white p-4 shadow-card">
             <k.icon className={`h-5 w-5 ${k.cls}`} />
             <p className="mt-2 font-display text-2xl font-bold tabular-nums">{k.value}</p>
             <p className="text-xs text-ink/55">{k.label}</p>
@@ -177,7 +177,7 @@ export default async function AdminAnalyticsPage() {
 
       {/* Dağılımlar */}
       <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-ink/5 bg-white/[0.06] p-5 shadow-card">
+        <div className="rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
           <h3 className="mb-3 flex items-center gap-1.5 font-display text-sm font-bold">
             <Sparkles className="h-4 w-4 text-violet" /> En sık yetenekler
           </h3>
@@ -194,7 +194,7 @@ export default async function AdminAnalyticsPage() {
           )}
         </div>
 
-        <div className="rounded-2xl border border-ink/5 bg-white/[0.06] p-5 shadow-card">
+        <div className="rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
           <h3 className="mb-3 flex items-center gap-1.5 font-display text-sm font-bold">
             <MapPin className="h-4 w-4 text-mint" /> En sık konumlar
           </h3>
@@ -234,7 +234,7 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-ink/5 bg-white/[0.06] p-5 shadow-card">
+    <div className="rounded-2xl border border-ink/5 bg-white p-5 shadow-card">
       <div className="mb-2 flex items-center justify-between">
         <h3 className="font-display text-sm font-bold">{title}</h3>
         <div className="flex gap-3">

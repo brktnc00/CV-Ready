@@ -9,7 +9,9 @@ import { DEMO_CV } from "@/lib/demo-cv";
 import UploadZone from "@/components/UploadZone";
 import JobInput from "@/components/JobInput";
 import GenerationOverlay from "@/components/GenerationOverlay";
+import PageBackground from "@/components/PageBackground";
 import ResultView from "@/components/ResultView";
+import AuthErrorNotice from "@/components/AuthErrorNotice";
 
 type Phase = "form" | "generating" | "result";
 
@@ -149,9 +151,13 @@ export default function Home() {
 
   return (
     <main className="min-h-screen dotted-bg">
+      <PageBackground />
+      <div className="px-6 pt-5">
+        <AuthErrorNotice />
+      </div>
       {/* Dil değiştirici (global header markanın altında) */}
       <div className="mx-auto flex w-full max-w-5xl items-center justify-end px-6 pt-5">
-        <div className="flex items-center gap-0.5 rounded-full border border-ink/10 bg-white/[0.06] p-1 shadow-card">
+        <div className="flex items-center gap-0.5 rounded-full border border-ink/10 bg-white p-1 shadow-card">
           {(["tr", "en"] as const).map((l) => (
             <button
               key={l}
@@ -208,7 +214,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.24 }}
-              className="flex flex-col gap-9 rounded-3xl border border-ink/5 bg-white/[0.06] p-6 shadow-card-lg sm:p-10"
+              className="flex flex-col gap-9 rounded-3xl border border-ink/5 bg-white p-6 shadow-card-lg sm:p-10"
             >
               <StepBlock num={1} title={dict.step1}>
                 <UploadZone dict={dict} file={file} onFile={setFile} />
@@ -239,7 +245,7 @@ export default function Home() {
                       onChange={(e) => setExtraNotes(e.target.value)}
                       placeholder={dict.extraPlaceholder}
                       rows={3}
-                      className="w-full resize-none rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm leading-relaxed outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white/[0.06]"
+                      className="w-full resize-none rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm leading-relaxed outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white"
                     />
                     <p className="mt-1 text-xs text-ink/40">{dict.extraHint}</p>
                   </div>
@@ -250,7 +256,7 @@ export default function Home() {
                       <Globe className="h-4 w-4 text-violet" />
                       {dict.outputLang}
                     </span>
-                    <div className="flex gap-0.5 rounded-full border border-ink/10 bg-white/[0.06] p-1">
+                    <div className="flex gap-0.5 rounded-full border border-ink/10 bg-white p-1">
                       {(["auto", "tr", "en"] as const).map((l) => (
                         <button
                           key={l}
@@ -270,7 +276,7 @@ export default function Home() {
                     whileTap={canGenerate ? { scale: 0.99 } : {}}
                     disabled={!canGenerate}
                     onClick={generate}
-                    className="gradient-primary flex items-center justify-center gap-2.5 rounded-2xl px-8 py-4 font-display text-lg font-bold text-white shadow-glow transition-all disabled:cursor-not-allowed disabled:opacity-35 disabled:shadow-none"
+                    className="gradient-primary flex items-center justify-center gap-2.5 rounded-2xl px-8 py-4 font-display text-lg font-bold text-white shadow-glow disabled:cursor-not-allowed disabled:opacity-35 disabled:shadow-none"
                   >
                     <Wand2 className="h-5 w-5" />
                     {dict.generate}

@@ -36,7 +36,7 @@ export default function AccountCvCard({ row }: { row: PublishedRow }) {
       layout
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl border border-ink/5 bg-white/[0.06] p-5 shadow-card sm:p-6"
+      className="rounded-3xl border border-ink/5 bg-white p-5 shadow-card sm:p-6"
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>

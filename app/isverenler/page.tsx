@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { Search, ShieldCheck } from "lucide-react";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import HrAuthForm from "@/components/HrAuthForm";
+import PageBackground from "@/components/PageBackground";
+import AuthErrorNotice from "@/components/AuthErrorNotice";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +25,10 @@ export default async function HrLandingPage() {
 
   return (
     <main className="min-h-screen dotted-bg">
+      <PageBackground />
+      <div className="px-6 pt-6">
+        <AuthErrorNotice />
+      </div>
       <div className="mx-auto grid w-full max-w-5xl items-center gap-10 px-6 py-14 md:grid-cols-2">
         <div>
           <h1 className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">

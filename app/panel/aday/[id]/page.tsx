@@ -50,7 +50,7 @@ export default async function CandidateDetailPage({
           <ArrowLeft className="h-4 w-4" /> Aday havuzuna dön
         </Link>
 
-        <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-8 shadow-card-lg sm:p-10">
+        <div className="rounded-3xl border border-ink/5 bg-white p-8 shadow-card-lg sm:p-10">
           {/* Başlık */}
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

@@ -1,6 +1,10 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  future: {
+    // Dokunmatik cihazlarda tap, hover'ı yanlışlıkla tetiklemesin
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -8,32 +12,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // "Luminous Nexus" karanlık tema: token anlamları korunur —
-        // ink = ön plan (artık açık), cream = zemin (artık karanlık).
-        // Böylece text-ink/60, border-ink/5, bg-cream/60 gibi yüzlerce
-        // kullanım otomatik olarak doğru kontrasta oturur.
-        cream: "#0D0B14",
-        ink: "#E8E6EE",
+        // Mono/outline tema: ink = mürekkep, cream = nötr beyaz zemin.
+        // "violet" token'ı artık mürekkep — tüm eski mor aksanlar otomatik
+        // mono'ya döner. mint/amber/rose yalnızca durum/skor anlamı taşır.
+        cream: "#FAFAFA",
+        ink: "#1A1523",
         violet: {
-          DEFAULT: "#B79DFF",
-          soft: "#2A2150",
+          DEFAULT: "#1A1523",
+          soft: "#EFEEF2",
         },
-        rose: "#FB7185",
-        amber: "#FFA94D",
+        rose: "#E11D48",
+        amber: "#D97706",
         mint: {
-          DEFAULT: "#34D399",
-          soft: "#0E2E22",
+          DEFAULT: "#0F9D6E",
+          soft: "#E4F6EE",
         },
-        skyblue: "#38BDF8",
+        skyblue: "#0284C7",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
         body: ["var(--font-body)", "sans-serif"],
       },
       boxShadow: {
-        card: "0 1px 2px rgba(0,0,0,0.35), 0 8px 24px -8px rgba(0,0,0,0.45)",
-        "card-lg": "0 2px 4px rgba(0,0,0,0.35), 0 16px 48px -12px rgba(0,0,0,0.6)",
-        glow: "0 8px 32px -8px rgba(151,113,255,0.4)",
+        // Açık tema: yumuşak, mürekkep tonlu gölgeler — sert siyah yok
+        card: "0 1px 2px rgba(26,21,35,0.05), 0 8px 24px -8px rgba(26,21,35,0.10)",
+        "card-lg": "0 2px 4px rgba(26,21,35,0.06), 0 16px 48px -12px rgba(26,21,35,0.16)",
+        glow: "0 8px 32px -8px rgba(26,21,35,0.25)",
       },
     },
   },

@@ -43,7 +43,7 @@ export default async function AccountPage() {
   if (!user) {
     return (
       <Shell>
-        <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-8 text-center shadow-card">
+        <div className="rounded-3xl border border-ink/5 bg-white p-8 text-center shadow-card">
           <h1 className="font-display text-2xl font-bold">Hesabım</h1>
           <p className="mt-2 text-ink/60">
             CV'ni yayınlamak ve yönetmek için önce ana sayfadan bir CV oluştur.
@@ -81,7 +81,7 @@ export default async function AccountPage() {
       <p className="mb-8 text-ink/55">Yayınlanan CV'lerini buradan yönetebilirsin.</p>
 
       {rows.length === 0 ? (
-        <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-8 text-center shadow-card">
+        <div className="rounded-3xl border border-ink/5 bg-white p-8 text-center shadow-card">
           <p className="text-ink/60">Henüz yayınlanmış bir CV'n yok.</p>
           <Link
             href="/olustur"
@@ -106,7 +106,7 @@ export default async function AccountPage() {
         <p className="mb-6 text-ink/55">Seninle iletişime geçmek isteyen işverenler.</p>
 
         {requests.length === 0 ? (
-          <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-8 text-center text-ink/55 shadow-card">
+          <div className="rounded-3xl border border-ink/5 bg-white p-8 text-center text-ink/55 shadow-card">
             Henüz temas talebin yok. CV'n yayında kaldıkça işverenler sana ulaşabilir.
           </div>
         ) : (

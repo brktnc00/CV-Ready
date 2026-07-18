@@ -17,18 +17,17 @@ interface LegalDict {
   cancelBtn: string;
   emailLabel: string;
   emailPlaceholder: string;
-  sendCodeBtn: string;
-  codeSentNote: string;
-  codeLabel: string;
-  codePlaceholder: string;
-  verifyPublishBtn: string;
+  sendLinkBtn: string;
+  linkSentTitle: string;
+  linkSentNote: string;
+  waitingLabel: string;
+  resendBtn: string;
   publishingLabel: string;
   successTitle: string;
   successBody: string;
   goToAccountBtn: string;
   errConsent: string;
   errAuth: string;
-  errCode: string;
   errGeneric: string;
 }
 
@@ -53,20 +52,19 @@ export const legal: Record<Lang, LegalDict> = {
     cancelBtn: "Vazgeç",
     emailLabel: "E-posta adresin",
     emailPlaceholder: "ornek@eposta.com",
-    sendCodeBtn: "Doğrulama kodu gönder",
-    codeSentNote:
-      "E-postana bir doğrulama gönderdik. Maildeki bağlantıya tıkla — bu pencere otomatik olarak devam edecek. Mailde 6 haneli kod varsa aşağıya da girebilirsin.",
-    codeLabel: "Doğrulama kodu",
-    codePlaceholder: "6 haneli kod",
-    verifyPublishBtn: "Doğrula ve yayınla",
+    sendLinkBtn: "Doğrulama bağlantısı gönder",
+    linkSentTitle: "E-postanı kontrol et",
+    linkSentNote:
+      "Adresine bir doğrulama bağlantısı gönderdik. Maildeki bağlantıya tıkla — CV'n buradan otomatik olarak yayınlanacak. Bu sekmeyi kapatma.",
+    waitingLabel: "Doğrulama bekleniyor...",
+    resendBtn: "Bağlantıyı tekrar gönder",
     publishingLabel: "Yayınlanıyor...",
     successTitle: "CV'n yayında! 🎉",
     successBody:
       "Artık kayıtlı işe alım uzmanları CV'ni aday panelinde görebilir. İletişim bilgilerin gizli kalır.",
     goToAccountBtn: "Hesabıma git",
     errConsent: "Devam etmek için açık rıza kutusunu işaretle.",
-    errAuth: "Kod gönderilemedi. E-postanı kontrol edip tekrar dene.",
-    errCode: "Kod doğrulanamadı. Kodu kontrol edip tekrar dene.",
+    errAuth: "Bağlantı gönderilemedi. E-postanı kontrol edip tekrar dene.",
     errGeneric: "Bir şeyler ters gitti. Lütfen tekrar dene.",
   },
   en: {
@@ -89,20 +87,19 @@ export const legal: Record<Lang, LegalDict> = {
     cancelBtn: "Cancel",
     emailLabel: "Your email address",
     emailPlaceholder: "you@example.com",
-    sendCodeBtn: "Send verification code",
-    codeSentNote:
-      "We sent a verification email. Click the link in it — this window will continue automatically. If the email contains a 6-digit code, you can also enter it below.",
-    codeLabel: "Verification code",
-    codePlaceholder: "6-digit code",
-    verifyPublishBtn: "Verify & publish",
+    sendLinkBtn: "Send verification link",
+    linkSentTitle: "Check your email",
+    linkSentNote:
+      "We sent a verification link to your address. Click it — your CV will be published from here automatically. Keep this tab open.",
+    waitingLabel: "Waiting for verification...",
+    resendBtn: "Resend link",
     publishingLabel: "Publishing...",
     successTitle: "Your CV is live! 🎉",
     successBody:
       "Registered recruiters can now find your CV in the candidate panel. Your contact details stay private.",
     goToAccountBtn: "Go to my account",
     errConsent: "Please tick the explicit-consent box to continue.",
-    errAuth: "Couldn't send the code. Check your email and try again.",
-    errCode: "Couldn't verify the code. Check it and try again.",
+    errAuth: "Couldn't send the link. Check your email and try again.",
     errGeneric: "Something went wrong. Please try again.",
   },
 };

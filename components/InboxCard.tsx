@@ -35,7 +35,7 @@ export default function InboxCard({ req }: { req: RequestRow }) {
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl border border-ink/5 bg-white/[0.06] p-5 shadow-card sm:p-6"
+      className="rounded-3xl border border-ink/5 bg-white p-5 shadow-card sm:p-6"
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="flex items-center gap-2 font-display font-bold">

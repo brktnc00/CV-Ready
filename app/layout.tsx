@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 import AppHeader from "@/components/AppHeader";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import "./globals.css";
 
 const display = Space_Grotesk({
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body className={`${display.variable} ${body.variable} font-body antialiased`}>
+        <AnimatedBackground />
         <AppHeader />
         {children}
       </body>

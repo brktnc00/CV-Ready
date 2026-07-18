@@ -2,98 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Güçlü easing eğrileri — yerleşik CSS easings fazla zayıf */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
 body {
-  background-color: #0d0b14;
-  color: #e8e6ee;
-  /* Atmosferik ışık: mor sol üstten, turuncu sağ ortadan — tüm ekranlarda */
-  background-image:
-    radial-gradient(circle at 28% -5%, rgba(124, 58, 237, 0.32) 0%, transparent 52%),
-    radial-gradient(circle at 82% 42%, rgba(249, 115, 22, 0.10) 0%, transparent 42%);
-  background-attachment: fixed;
+  /* Mono/outline tema: nötr beyaz zemin, mürekkep metin — renk yok */
+  background-color: #fafafa;
+  color: #1a1523;
 }
 
 /* İnce noktalı doku — arka plana derinlik verir, dikkat çekmez */
 .dotted-bg {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(26, 21, 35, 0.06) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-/* Gradyan metin — marka vurgusu */
+/* Marka vurgusu — mono'da düz mürekkep */
 .gradient-text {
-  background: linear-gradient(100deg, #7c3aed 0%, #db2777 55%, #f97316 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #1a1523;
 }
 
-/* Birincil gradyan yüzey (butonlar) */
+/* Birincil yüzey (butonlar) — mono'da dolu mürekkep */
 .gradient-primary {
-  background: linear-gradient(100deg, #7c3aed 0%, #db2777 60%, #f97316 130%);
+  background: #1a1523;
+}
+/* Basılabilir yüzeyler basıldığını hissettirsin */
+button.gradient-primary,
+a.gradient-primary {
+  transition:
+    transform 160ms var(--ease-out-strong),
+    opacity 160ms var(--ease-out-strong);
+}
+button.gradient-primary:active:not(:disabled),
+a.gradient-primary:active {
+  transform: scale(0.97);
 }
 
 ::selection {
-  background: #7c3aed;
+  background: #1a1523;
   color: #ffffff;
 }
 
-/* ─── "Luminous Nexus" karanlık dili ──────────────────────────────────
-   Artık tüm site karanlık: zemin/ışık body'de. .landing yalnızca
-   landing'in kullandığı metin değişkenlerini taşır. */
+/* ─── Mono/outline dili ───────────────────────────────────────────────
+   Tüm site siyah-beyaz: dolgusuz outline kartlar, mürekkep aksanlar.
+   .landing yalnızca landing'in metin değişkenlerini taşır. */
 .landing {
-  --lx-text: #e8e6ee;
-  --lx-muted: #a9a3bb;
+  --lx-text: #1a1523;
+  --lx-muted: #5b5563;
+  color: #1a1523;
 }
 
-/* Cam yüzey — sert gölge yerine ince kenar + bulanıklık */
+/* Lottie arka planı taşıyan sayfalarda particle ağı gizli. */
+body:has(.landing) .particle-bg,
+body:has(.page-lottie) .particle-bg {
+  display: none;
+}
+
+/* Cam yüzey → dolgusuz outline kart: kenar taşır, gölge yok */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(20px);
+  background: transparent;
+  border: 1px solid rgba(26, 21, 35, 0.16);
+  backdrop-filter: none;
 }
 .glass-hover {
-  transition: border-color 0.25s, box-shadow 0.25s;
+  transition:
+    border-color 200ms var(--ease-out-strong),
+    background-color 200ms var(--ease-out-strong);
 }
 .glass-hover:hover {
-  border-color: rgba(208, 188, 255, 0.5);
-  box-shadow: 0 0 40px -12px rgba(208, 188, 255, 0.4);
+  border-color: rgba(26, 21, 35, 0.55);
+  background: rgba(26, 21, 35, 0.03);
 }
 
-/* Mor→turuncu aksan (koyu zemine göre açılmış tonlar) */
+/* Marka aksan metni — mono'da düz mürekkep */
 .nexus-text {
-  background: linear-gradient(45deg, #d0bcff 0%, #ffb77c 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #1a1523;
 }
 
-/* Gradyan kenarlı buton — Stitch'in birincil buton deseni */
+/* Birincil CTA: outline — hover'da dolar (mono'nun tek "renk" hamlesi) */
 .nexus-btn {
   position: relative;
-  background: rgba(13, 11, 20, 0.72);
-  transition: box-shadow 0.25s;
+  background: transparent;
+  color: #1a1523;
+  border: 1.5px solid #1a1523;
+  transition:
+    background-color 200ms var(--ease-out-strong),
+    color 200ms var(--ease-out-strong),
+    transform 160ms var(--ease-out-strong);
 }
-.nexus-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(45deg, #d0bcff, #ffb77c);
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+.nexus-btn:active {
+  transform: scale(0.97);
 }
 .nexus-btn:hover {
-  box-shadow: 0 0 32px -4px rgba(208, 188, 255, 0.45);
+  background: #1a1523;
+  color: #ffffff;
+}
+.nexus-btn:hover .lucide {
+  color: #ffffff;
 }
 
 /* Yörünge halkaları — ağ/eşleşme metaforu */
 .orbit-ring {
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(26, 21, 35, 0.14);
   border-radius: 50%;
   inset: 0;
   margin: auto;
@@ -119,6 +133,6 @@ body {
 /* Panel/form giriş alanı — tekrar eden stil */
 @layer components {
   .input-base {
-    @apply w-full rounded-2xl border border-ink/10 bg-black/30 px-4 py-3 text-sm outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-black/50;
+    @apply w-full rounded-2xl border border-ink/15 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-ink/30 focus:border-ink/60 focus:bg-white;
   }
 }

@@ -52,7 +52,7 @@ export default function CandidateCard({ c, demo = false }: { c: CandidateCardDat
   return (
     <Link
       href={href}
-      className="group flex flex-col overflow-hidden rounded-3xl border border-ink/8 bg-white/[0.06] shadow-card transition-all hover:-translate-y-1 hover:border-violet/30 hover:shadow-card-lg"
+      className="group flex flex-col overflow-hidden rounded-3xl border border-ink/8 bg-white shadow-card transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-1 hover:border-violet/30 hover:shadow-card-lg"
     >
       {/* Üst şerit — avatar + isim + uyum rozeti */}
       <div className="relative flex items-start gap-3 bg-gradient-to-br from-violet-soft to-cream/40 px-5 pb-4 pt-5">

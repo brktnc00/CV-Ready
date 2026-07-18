@@ -38,7 +38,7 @@ function ScoreRing({ score, label }: { score: number; label: string }) {
     <div className="flex flex-col items-center gap-2">
       <div className="relative h-36 w-36">
         <svg viewBox="0 0 128 128" className="h-full w-full -rotate-90">
-          <circle cx="64" cy="64" r={r} fill="none" stroke="#E8E6EE" strokeOpacity="0.12" strokeWidth="11" />
+          <circle cx="64" cy="64" r={r} fill="none" stroke="#1A1523" strokeOpacity="0.08" strokeWidth="11" />
           <motion.circle
             cx="64"
             cy="64"
@@ -77,10 +77,10 @@ function TemplateCard({
   return (
     <button
       onClick={onSelect}
-      className={`group flex flex-col items-center gap-2 rounded-2xl border-2 p-3 transition-all ${
+      className={`group flex flex-col items-center gap-2 rounded-2xl border-2 p-3 transition-colors active:scale-[0.98] ${
         active
           ? "border-violet bg-violet-soft shadow-glow"
-          : "border-white/10 bg-white/[0.06] hover:border-violet/40"
+          : "border-ink/10 bg-white hover:border-violet/40"
       }`}
     >
       {/* Mini mockup */}
@@ -162,13 +162,13 @@ export default function ResultView({ cv, dict, lang, onReset }: Props) {
 
       <div className="mb-8 grid gap-6 md:grid-cols-[auto_1fr]">
         {/* Skor kartı */}
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-ink/5 bg-white/[0.06] p-8 shadow-card">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-ink/5 bg-white p-8 shadow-card">
           <ScoreRing score={cv.match.score} label={dict.matchScore} />
         </div>
 
         {/* Anahtar kelimeler + öneriler */}
         <div className="flex flex-col gap-6">
-          <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-6 shadow-card">
+          <div className="rounded-3xl border border-ink/5 bg-white p-6 shadow-card">
             <h3 className="mb-3 flex items-center gap-2 font-display text-base font-bold">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-soft">
                 <Target className="h-4 w-4 text-violet" />
@@ -189,7 +189,7 @@ export default function ResultView({ cv, dict, lang, onReset }: Props) {
               ))}
             </div>
           </div>
-          <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-6 shadow-card">
+          <div className="rounded-3xl border border-ink/5 bg-white p-6 shadow-card">
             <h3 className="mb-3 flex items-center gap-2 font-display text-base font-bold">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber/10">
                 <Lightbulb className="h-4 w-4 text-amber" />
@@ -208,7 +208,7 @@ export default function ResultView({ cv, dict, lang, onReset }: Props) {
       </div>
 
       {/* Şablon seçimi + aksiyonlar */}
-      <div className="mb-10 rounded-3xl border border-ink/5 bg-white/[0.06] p-6 shadow-card sm:p-8">
+      <div className="mb-10 rounded-3xl border border-ink/5 bg-white p-6 shadow-card sm:p-8">
         <h3 className="mb-4 flex items-center gap-2 font-display text-base font-bold">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-soft">
             <LayoutTemplate className="h-4 w-4 text-violet" />
@@ -233,7 +233,7 @@ export default function ResultView({ cv, dict, lang, onReset }: Props) {
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={onReset}
-              className="flex items-center gap-2 rounded-xl border border-ink/15 bg-white/[0.06] px-6 py-3.5 font-display text-base font-bold text-ink/70 transition-colors hover:border-ink/30 hover:text-ink"
+              className="flex items-center gap-2 rounded-xl border border-ink/15 bg-white px-6 py-3.5 font-display text-base font-bold text-ink/70 transition-colors hover:border-ink/30 hover:text-ink"
             >
               <RotateCcw className="h-4 w-4" />
               {dict.startOver}
@@ -260,7 +260,7 @@ export default function ResultView({ cv, dict, lang, onReset }: Props) {
         <Eye className="h-5 w-5 text-violet" />
         {dict.preview}
       </h3>
-      <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-8 shadow-card sm:p-12">
+      <div className="rounded-3xl border border-ink/5 bg-white p-8 shadow-card sm:p-12">
         <h4 className="font-display text-3xl font-bold tracking-tight">{cv.fullName}</h4>
         <p className="mt-1 font-semibold text-violet">{cv.headline}</p>
         <p className="mt-1.5 text-sm text-ink/55">

@@ -46,7 +46,7 @@ export default function ContactButton({ cvId, candidateName }: { cvId: string; c
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-md rounded-3xl border border-ink/5 bg-white/[0.06] p-7 shadow-card-lg"
+              className="relative w-full max-w-md rounded-3xl border border-ink/5 bg-white p-7 shadow-card-lg"
             >
               <button
                 onClick={() => setOpen(false)}

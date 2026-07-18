@@ -53,7 +53,7 @@ export default async function TaleplerPage() {
         <p className="mb-8 text-ink/55">Adaylara gönderdiğin temas talepleri ve durumları.</p>
 
         {rows.length === 0 ? (
-          <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-10 text-center shadow-card">
+          <div className="rounded-3xl border border-ink/5 bg-white p-10 text-center shadow-card">
             <p className="text-ink/60">Henüz temas talebi göndermedin.</p>
             <Link
               href="/panel"
@@ -69,7 +69,7 @@ export default async function TaleplerPage() {
               return (
                 <div
                   key={r.id}
-                  className="rounded-3xl border border-ink/5 bg-white/[0.06] p-5 shadow-card sm:p-6"
+                  className="rounded-3xl border border-ink/5 bg-white p-5 shadow-card sm:p-6"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-display font-bold">

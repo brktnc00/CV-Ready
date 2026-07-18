@@ -64,7 +64,7 @@ export default function HrAuthForm() {
   };
 
   return (
-    <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-7 shadow-card-lg sm:p-8">
+    <div className="rounded-3xl border border-ink/5 bg-white p-7 shadow-card-lg sm:p-8">
       <div className="mb-6 flex gap-1 rounded-full border border-ink/10 bg-cream/60 p-1">
         {(["login", "signup"] as const).map((m) => (
           <button
@@ -131,7 +131,7 @@ export default function HrAuthForm() {
         whileTap={{ scale: 0.99 }}
         onClick={submit}
         disabled={busy || !email.includes("@") || password.length < 6}
-        className="gradient-primary mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 font-display text-base font-bold text-white shadow-glow transition-all disabled:opacity-50"
+        className="gradient-primary mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 font-display text-base font-bold text-white shadow-glow disabled:opacity-50"
       >
         {busy && <Loader2 className="h-5 w-5 animate-spin" />}
         {mode === "login" ? "Giriş yap" : "Hesap oluştur"}

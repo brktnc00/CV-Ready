@@ -25,7 +25,7 @@ export default function JobInput({
   return (
     <div className="flex flex-col gap-2">
       {mode === "url" ? (
-        <div className="flex items-center gap-3 rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3.5 transition-colors focus-within:border-violet/40 focus-within:bg-white/[0.06]">
+        <div className="flex items-center gap-3 rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3.5 transition-colors focus-within:border-violet/40 focus-within:bg-white">
           <Link2 className="h-5 w-5 shrink-0 text-violet" />
           <input
             type="url"
@@ -41,7 +41,7 @@ export default function JobInput({
           onChange={(e) => onJobText(e.target.value)}
           placeholder={dict.jobTextPlaceholder}
           rows={6}
-          className="w-full resize-none rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3.5 text-sm font-medium leading-relaxed outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white/[0.06]"
+          className="w-full resize-none rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3.5 text-sm font-medium leading-relaxed outline-none transition-colors placeholder:text-ink/30 focus:border-violet/40 focus:bg-white"
         />
       )}
       <button

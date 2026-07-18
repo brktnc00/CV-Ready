@@ -43,7 +43,7 @@ export default async function AdminUsersPage() {
       </h2>
       <p className="mb-6 text-sm text-ink/50">Tüm kayıtlı adaylar ve işverenler.</p>
 
-      <div className="overflow-x-auto rounded-3xl border border-ink/5 bg-white/[0.06] shadow-card">
+      <div className="overflow-x-auto rounded-3xl border border-ink/5 bg-white shadow-card">
         <table className="w-full min-w-[640px] text-left text-sm">
           <thead className="border-b border-ink/8 text-xs uppercase tracking-wide text-ink/45">
             <tr>

@@ -13,6 +13,7 @@ import {
   Info,
 } from "lucide-react";
 import type { Dict } from "@/lib/i18n";
+import PageBackground from "./PageBackground";
 
 interface Props {
   dict: Dict;
@@ -24,10 +25,10 @@ const STAGE_ICONS = [FileText, Search, Target, PenLine, Sparkles];
 
 // Arka planda süzülen yumuşak renk lekeleri
 const BLOBS = [
-  { color: "rgba(124,58,237,0.14)", size: 380, left: "8%", top: "12%", duration: 11 },
-  { color: "rgba(219,39,119,0.10)", size: 300, left: "68%", top: "8%", duration: 13 },
-  { color: "rgba(249,115,22,0.10)", size: 340, left: "58%", top: "62%", duration: 12 },
-  { color: "rgba(16,185,129,0.10)", size: 260, left: "12%", top: "64%", duration: 14 },
+  { color: "rgba(26,21,35,0.08)", size: 380, left: "8%", top: "12%", duration: 11 },
+  { color: "rgba(26,21,35,0.05)", size: 300, left: "68%", top: "8%", duration: 13 },
+  { color: "rgba(26,21,35,0.06)", size: 340, left: "58%", top: "62%", duration: 12 },
+  { color: "rgba(26,21,35,0.04)", size: 260, left: "12%", top: "64%", duration: 14 },
 ];
 
 export default function GenerationOverlay({ dict, streamedChars }: Props) {
@@ -62,6 +63,9 @@ export default function GenerationOverlay({ dict, streamedChars }: Props) {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-cream dotted-bg"
     >
+      {/* Sürekli akan mono Lottie zemini */}
+      <PageBackground src="/loading-bg.json" className="absolute inset-0 opacity-[0.16]" />
+
       {/* Yumuşak renk leke animasyonları */}
       {BLOBS.map((b, i) => (
         <motion.div
@@ -79,34 +83,9 @@ export default function GenerationOverlay({ dict, streamedChars }: Props) {
         />
       ))}
 
-      {/* Merkez: dönen gradyan halka + belge ikonu */}
-      <div className="relative mb-12 flex h-48 w-48 items-center justify-center">
-        {/* Gradyan halka */}
-        <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background:
-              "conic-gradient(from 0deg, #7C3AED, #DB2777, #F97316, #10B981, #0EA5E9, #7C3AED)",
-            WebkitMask: "radial-gradient(circle, transparent 62%, black 65%)",
-            mask: "radial-gradient(circle, transparent 62%, black 65%)",
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-        />
-        {/* İkinci, zıt yönde ince halka */}
-        <motion.div
-          className="absolute inset-4 rounded-full border-2 border-dashed border-violet/25"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-        />
-        {/* Nefes alan merkez rozet */}
-        <motion.div
-          className="gradient-primary flex h-24 w-24 items-center justify-center rounded-3xl shadow-glow"
-          animate={{ scale: [1, 1.07, 1], rotate: [-2, 2, -2] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <FileText className="h-11 w-11 text-white" />
-        </motion.div>
+      {/* Merkez: CV üretim adımlarını akıtan liste animasyonu */}
+      <div className="relative mb-10" style={{ height: "17rem", width: "20rem" }}>
+        <PageBackground src="/loading-list.json" className="absolute inset-0 opacity-90" />
       </div>
 
       {/* Aşama listesi */}
@@ -127,7 +106,7 @@ export default function GenerationOverlay({ dict, streamedChars }: Props) {
                     ? "bg-mint text-white"
                     : i === activeStage
                       ? "gradient-primary text-white"
-                      : "border border-ink/10 bg-white/[0.06] text-ink/40"
+                      : "border border-ink/10 bg-white text-ink/40"
                 }`}
               >
                 {i < activeStage ? (
@@ -162,7 +141,7 @@ export default function GenerationOverlay({ dict, streamedChars }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white/[0.06] px-4 py-2 text-sm font-medium text-ink/60 shadow-card"
+            className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-sm font-medium text-ink/60 shadow-card"
           >
             <Info className="h-3.5 w-3.5 shrink-0 text-violet" />
             {dict.funFacts[factIndex]}

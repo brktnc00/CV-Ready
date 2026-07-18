@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { X, ShieldCheck, Mail, KeyRound, Loader2, PartyPopper } from "lucide-react";
+import { X, ShieldCheck, Mail, MailCheck, Loader2, PartyPopper } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { publishCV } from "@/app/actions/publish";
@@ -10,7 +10,7 @@ import { legal } from "@/lib/legal";
 import type { Lang } from "@/lib/i18n";
 import type { TailoredCV } from "@/lib/cv-schema";
 
-type Step = "consent" | "email" | "code" | "publishing" | "done";
+type Step = "consent" | "email" | "waiting" | "publishing" | "done";
 
 interface Props {
   cv: TailoredCV;
@@ -25,7 +25,6 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
   const [step, setStep] = useState<Step>("consent");
   const [consent, setConsent] = useState(false);
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -42,14 +41,14 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
     } else {
       published.current = false;
       setError(L.errGeneric);
-      setStep("code");
+      setStep("waiting");
     }
   };
 
   // Maildeki bağlantı başka sekmede oturum açar; oturum tarayıcıda ortak
   // olduğundan bu sekme SIGNED_IN olayını yakalayıp yayına otomatik devam eder.
   useEffect(() => {
-    if (step !== "code") return;
+    if (step !== "waiting") return;
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
@@ -87,7 +86,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
     }
   };
 
-  const sendCode = async () => {
+  const sendLink = async () => {
     setError(null);
     setBusy(true);
     const { error: authErr } = await supabase.auth.signInWithOtp({
@@ -103,23 +102,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
       setError(L.errAuth);
       return;
     }
-    setStep("code");
-  };
-
-  const verifyAndPublish = async () => {
-    setError(null);
-    setBusy(true);
-    const { error: vErr } = await supabase.auth.verifyOtp({
-      email: email.trim(),
-      token: code.trim(),
-      type: "email",
-    });
-    setBusy(false);
-    if (vErr) {
-      setError(L.errCode);
-      return;
-    }
-    await doPublish();
+    setStep("waiting");
   };
 
   return (
@@ -127,7 +110,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/30 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <motion.div
@@ -136,7 +119,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: "spring", stiffness: 300, damping: 26 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/10 bg-[#16121f] p-7 shadow-card-lg sm:p-8"
+        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-ink/5 bg-white p-7 shadow-card-lg sm:p-8"
       >
         <button
           onClick={onClose}
@@ -193,7 +176,7 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
               <button
                 onClick={afterConsent}
                 disabled={busy}
-                className="gradient-primary mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 font-display text-base font-bold text-white shadow-glow transition-all disabled:opacity-50"
+                className="gradient-primary mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 font-display text-base font-bold text-white shadow-glow disabled:opacity-50"
               >
                 {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
                 {L.continueBtn}
@@ -218,47 +201,43 @@ export default function PublishDialog({ cv, lang, onClose }: Props) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={L.emailPlaceholder}
-                className="w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm outline-none transition-colors focus:border-violet/40 focus:bg-white/[0.06]"
+                className="w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-sm outline-none transition-colors focus:border-violet/40 focus:bg-white"
               />
               {error && <p className="mt-3 text-sm font-semibold text-rose">{error}</p>}
               <button
-                onClick={sendCode}
+                onClick={sendLink}
                 disabled={busy || !email.includes("@")}
-                className="gradient-primary mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 font-display text-base font-bold text-white shadow-glow transition-all disabled:opacity-50"
+                className="gradient-primary mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 font-display text-base font-bold text-white shadow-glow disabled:opacity-50"
               >
                 {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
-                {L.sendCodeBtn}
+                {L.sendLinkBtn}
               </button>
             </motion.div>
           )}
 
-          {step === "code" && (
+          {step === "waiting" && (
             <motion.div
-              key="code"
+              key="waiting"
               initial={{ opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -16 }}
+              className="flex flex-col items-center gap-3 py-6 text-center"
             >
-              <p className="text-sm leading-relaxed text-ink/70">{L.codeSentNote}</p>
-              <label className="mb-1.5 mt-4 flex items-center gap-1.5 text-sm font-semibold text-ink/70">
-                <KeyRound className="h-4 w-4 text-violet" />
-                {L.codeLabel}
-              </label>
-              <input
-                inputMode="numeric"
-                value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                placeholder={L.codePlaceholder}
-                className="w-full rounded-2xl border border-ink/10 bg-cream/60 px-4 py-3 text-center text-lg font-bold tracking-[0.5em] outline-none transition-colors focus:border-violet/40 focus:bg-white/[0.06]"
-              />
-              {error && <p className="mt-3 text-sm font-semibold text-rose">{error}</p>}
+              <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-soft">
+                <MailCheck className="h-8 w-8 text-violet" />
+              </span>
+              <h4 className="font-display text-lg font-bold">{L.linkSentTitle}</h4>
+              <p className="max-w-sm text-sm leading-relaxed text-ink/65">{L.linkSentNote}</p>
+              <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-ink/45">
+                <Loader2 className="h-4 w-4 animate-spin" /> {L.waitingLabel}
+              </p>
+              {error && <p className="mt-1 text-sm font-semibold text-rose">{error}</p>}
               <button
-                onClick={verifyAndPublish}
-                disabled={busy || code.length < 6}
-                className="gradient-primary mt-5 flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 font-display text-base font-bold text-white shadow-glow transition-all disabled:opacity-50"
+                onClick={sendLink}
+                disabled={busy}
+                className="mt-2 text-sm font-bold text-ink/60 underline underline-offset-4 transition-colors hover:text-ink disabled:opacity-50"
               >
-                {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
-                {L.verifyPublishBtn}
+                {L.resendBtn}
               </button>
             </motion.div>
           )}

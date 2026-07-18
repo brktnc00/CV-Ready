@@ -40,7 +40,7 @@ export default async function AdminRequestsPage() {
       <p className="mb-6 text-sm text-ink/50">İşveren → aday platform içi iletişim trafiği.</p>
 
       {rows.length === 0 ? (
-        <div className="rounded-3xl border border-ink/5 bg-white/[0.06] p-10 text-center text-ink/55 shadow-card">
+        <div className="rounded-3xl border border-ink/5 bg-white p-10 text-center text-ink/55 shadow-card">
           Henüz temas talebi yok.
         </div>
       ) : (
@@ -50,7 +50,7 @@ export default async function AdminRequestsPage() {
             return (
               <div
                 key={r.id}
-                className="rounded-3xl border border-ink/5 bg-white/[0.06] p-4 shadow-card sm:p-5"
+                className="rounded-3xl border border-ink/5 bg-white p-4 shadow-card sm:p-5"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="flex items-center gap-2 font-display font-bold">
